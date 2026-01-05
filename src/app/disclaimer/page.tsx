@@ -253,7 +253,7 @@ const DisclaimerPage: React.FC = () => {
               ⚙️ Go to Settings
             </Link>
             <Link
-              href="/login"
+              href="/auth/login?screen_hint=signup"
               className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors text-center"
             >
               🔐 Login / Register

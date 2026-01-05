@@ -74,7 +74,7 @@ const Navigation: React.FC = () => {
           {!user && (
             <div className="hidden md:flex">
               <a
-                href="/auth/login"
+                href="/auth/login?screen_hint=signup"
                 className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-800"
               >
                 <span>🔑</span>
