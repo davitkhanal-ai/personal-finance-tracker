@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFinance } from '@/context/FinanceContext';
-import { formatCurrency } from '@/lib/currency';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface BalanceInput {
   accountId: string;
@@ -11,6 +11,7 @@ interface BalanceInput {
 
 export const RecordBalances: React.FC = () => {
   const { accounts, balances, getAccountsWithBalances, updateMultipleBalances } = useFinance();
+  const { formatCurrency } = useCurrency();
   const [balanceInputs, setBalanceInputs] = useState<BalanceInput[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [isSubmitting, setIsSubmitting] = useState(false);
