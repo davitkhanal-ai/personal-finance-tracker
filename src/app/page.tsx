@@ -6,8 +6,8 @@ import LoginPage from "@/components/LoginPage";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Home() {
-  const { user, isLoading } = useAuth();
-  
+  const { user, isLoading, isAuthConfigured } = useAuth();
+
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto">
@@ -20,14 +20,16 @@ export default function Home() {
       </div>
     );
   }
-  
-  if (!user) {
+
+  // Show LoginPage only when Auth0 is configured but user is not logged in
+  // In offline mode (Auth0 not configured), skip login and show the app directly
+  if (!user && isAuthConfigured) {
     return <LoginPage />;
   }
-  
+
   return (
     <div>
-      <ClientOnly 
+      <ClientOnly
         fallback={
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-lg p-6">

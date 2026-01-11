@@ -34,13 +34,21 @@ cd personal-finance-tracker
 ```bash
 npm install
 ```
-3. Set up a MongoDB database (can be local or hosted depending on if you're going to deploy this).
-4. Set up an Auth0 application for user authentication.
-5. Configure environment variables as described below.
-6. Run the development server.
+3. Run the development server.
 ```bash
 npm run dev
 ```
+
+**That's it!** The app works immediately in offline mode with localStorage.
+
+### Optional: Enable Cloud Sync & Authentication
+
+If you want to enable cloud sync and user authentication:
+
+4. Set up a MongoDB database (can be local or hosted).
+5. Set up an Auth0 application for user authentication.
+6. Configure environment variables as described below.
+7. Add `NEXT_PUBLIC_AUTH0_ENABLED=true` to your `.env.local` to enable auth UI.
 
 ### Auth0 Setup
 
@@ -77,11 +85,15 @@ AUTH0_DOMAIN=https://your-domain.auth0.com/
 AUTH0_CLIENT_ID=your-auth0-client-id
 AUTH0_DOMAIN=your-domain.auth0.com
 APP_BASE_URL=http://localhost:3001
+# Enable Auth0 UI (set to 'true' to show login buttons)
+NEXT_PUBLIC_AUTH0_ENABLED=true
 
 # MongoDB
 DATABASE_URL=mongodb://localhost:27017/personal-finance-tracker-dev
 MONGODB_DB_NAME=personal-finance-tracker-dev
 ```
+
+> **Note:** If you don't set up Auth0/MongoDB, the app will work in offline-only mode with all auth UI hidden.
 
 ## Usage
 

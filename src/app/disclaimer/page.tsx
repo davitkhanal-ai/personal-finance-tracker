@@ -2,14 +2,16 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 const DisclaimerPage: React.FC = () => {
+  const { isAuthConfigured } = useAuth();
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">📋 Privacy Policy & Disclaimer</h1>
-          
+
           {/* Privacy First Banner */}
           <div className="bg-green-50 border border-green-200 rounded-md p-6 mb-8">
             <div className="flex items-start">
@@ -19,7 +21,7 @@ const DisclaimerPage: React.FC = () => {
               <div className="ml-3">
                 <h2 className="text-lg font-medium text-green-800">Your Data Stays Private</h2>
                 <p className="mt-2 text-green-700">
-                  Your financial data is <strong>never sold or shared</strong> with third parties. You have complete control 
+                  Your financial data is <strong>never sold or shared</strong> with third parties. You have complete control
                   over whether to store your data locally only or enable cloud sync for convenience.
                 </p>
               </div>
@@ -31,7 +33,7 @@ const DisclaimerPage: React.FC = () => {
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">👤 Account & Authentication</h2>
             <div className="bg-blue-50 border border-blue-200 rounded-md p-6">
               <p className="text-blue-700 mb-4">
-                All users are required to create an account to use this application. We use <strong>Auth0</strong> for 
+                All users are required to create an account to use this application. We use <strong>Auth0</strong> for
                 secure authentication, which provides:
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4 text-blue-700">
@@ -71,8 +73,8 @@ const DisclaimerPage: React.FC = () => {
             </div>
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
               <p className="text-gray-700 text-sm">
-                <strong>Your Choice:</strong> You can enable or disable cloud sync in the Settings page at any time. 
-                When disabled, your data remains local only. When enabled, your encrypted financial data is stored 
+                <strong>Your Choice:</strong> You can enable or disable cloud sync in the Settings page at any time.
+                When disabled, your data remains local only. When enabled, your encrypted financial data is stored
                 securely in our MongoDB database hosted on AWS.
               </p>
             </div>
@@ -92,7 +94,7 @@ const DisclaimerPage: React.FC = () => {
                   <li>• <strong>Minimal data collection</strong> - only financial data you explicitly enter</li>
                 </ul>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
                 <h3 className="font-semibold text-blue-800 mb-2">🏗️ Technical Infrastructure</h3>
                 <ul className="text-blue-700 space-y-1 text-sm">
@@ -252,12 +254,14 @@ const DisclaimerPage: React.FC = () => {
             >
               ⚙️ Go to Settings
             </Link>
-            <Link
-              href="/auth/login?screen_hint=signup"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors text-center"
-            >
-              🔐 Login / Register
-            </Link>
+            {isAuthConfigured && (
+              <Link
+                href="/auth/login?screen_hint=signup"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-md font-medium transition-colors text-center"
+              >
+                🔐 Login / Register
+              </Link>
+            )}
           </div>
         </div>
       </div>

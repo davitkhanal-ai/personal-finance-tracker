@@ -3,19 +3,21 @@
 import React, { useState } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { useCurrency } from '@/context/CurrencyContext';
+import { useAuth } from '@/context/AuthContext';
 import { CurrencySelector } from './CurrencySelector';
 import { CloudSyncToggle } from './CloudSyncToggle';
 
 const Settings: React.FC = () => {
-  const { 
-    accounts, 
-    balances, 
-    importData, 
-    exportData, 
-    clearAllData 
+  const {
+    accounts,
+    balances,
+    importData,
+    exportData,
+    clearAllData
   } = useFinance();
   const { selectedCurrency } = useCurrency();
-  
+  const { isAuthConfigured } = useAuth();
+
   const [importFile, setImportFile] = useState<File | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [importStatus, setImportStatus] = useState<{
@@ -64,7 +66,7 @@ const Settings: React.FC = () => {
     try {
       const text = await importFile.text();
       const success = importData(text);
-      
+
       if (success) {
         setImportStatus({
           type: 'success',
@@ -108,11 +110,10 @@ const Settings: React.FC = () => {
     <div className="space-y-8">
       {/* Status Messages */}
       {importStatus.type && (
-        <div className={`p-4 rounded-md ${
-          importStatus.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
-            : 'bg-red-50 border border-red-200 text-red-800'
-        }`}>
+        <div className={`p-4 rounded-md ${importStatus.type === 'success'
+          ? 'bg-green-50 border border-green-200 text-green-800'
+          : 'bg-red-50 border border-red-200 text-red-800'
+          }`}>
           <div className="flex">
             <div className="flex-shrink-0">
               <span className="text-lg">
@@ -169,21 +170,22 @@ const Settings: React.FC = () => {
         </div>
       </div>
 
-      {/* Cloud Sync Settings */}
-
-      <div className="bg-gray-50 rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">☁️ Cloud Sync Settings</h2>
-        <p className="text-gray-600 mb-4">
-          Enable or disable cloud synchronization of your financial data. When enabled, your data will be securely stored and synced across devices.
-        </p>
-        <CloudSyncToggle />
-      </div>
+      {/* Cloud Sync Settings - only shown when Auth0 is configured */}
+      {isAuthConfigured && (
+        <div className="bg-gray-50 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">☁️ Cloud Sync Settings</h2>
+          <p className="text-gray-600 mb-4">
+            Enable or disable cloud synchronization of your financial data. When enabled, your data will be securely stored and synced across devices.
+          </p>
+          <CloudSyncToggle />
+        </div>
+      )}
 
       {/* Export Section */}
       <div className="bg-gray-50 rounded-lg p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">📤 Export Data</h2>
         <p className="text-gray-600 mb-4">
-          Download a backup of all your financial data in JSON format. This includes all accounts, 
+          Download a backup of all your financial data in JSON format. This includes all accounts,
           balance records, and transaction history.
         </p>
         <button
@@ -201,7 +203,7 @@ const Settings: React.FC = () => {
         <p className="text-gray-600 mb-4">
           Import financial data from a previously exported backup file. This will replace all current data on your account.
         </p>
-        
+
         <div className="space-y-4">
           <div>
             <label htmlFor="import-file" className="block text-sm font-medium text-gray-700 mb-2">
@@ -215,7 +217,7 @@ const Settings: React.FC = () => {
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
           </div>
-          
+
           {importFile && (
             <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
               <p className="text-sm text-blue-800">
@@ -223,15 +225,14 @@ const Settings: React.FC = () => {
               </p>
             </div>
           )}
-          
+
           <button
             onClick={handleImport}
             disabled={!importFile}
-            className={`px-6 py-3 rounded-md font-medium transition-colors flex items-center space-x-2 ${
-              importFile
-                ? 'bg-green-600 hover:bg-green-700 text-white'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            className={`px-6 py-3 rounded-md font-medium transition-colors flex items-center space-x-2 ${importFile
+              ? 'bg-green-600 hover:bg-green-700 text-white'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
           >
             <span>📤</span>
             <span>Import Data</span>
@@ -245,7 +246,7 @@ const Settings: React.FC = () => {
         <p className="text-red-700 mb-4">
           Permanently delete all your financial data. This action cannot be undone.
         </p>
-        
+
         {!showConfirmDelete ? (
           <button
             onClick={() => setShowConfirmDelete(true)}
@@ -269,7 +270,7 @@ const Settings: React.FC = () => {
                 This action cannot be undone!
               </p>
             </div>
-            
+
             <div className="flex space-x-3">
               <button
                 onClick={handleClearAllData}

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 const Navigation: React.FC = () => {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isAuthConfigured } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -32,7 +32,7 @@ const Navigation: React.FC = () => {
   }
 
   return (
-    <nav className="bg-white shadow-lg border-b">
+    <nav className="bg-white shadow-lg">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo/Brand */}
@@ -41,9 +41,9 @@ const Navigation: React.FC = () => {
             <span className="text-xl font-bold text-gray-800 hidden sm:block">Personal Finance Tracker</span>
             <span className="text-lg font-bold text-gray-800 sm:hidden">Finance Tracker</span>
           </div>
-          
-          {/* Desktop Navigation */}
-          {user && (
+
+          {/* Desktop Navigation - shown when user logged in OR in offline mode */}
+          {(user || !isAuthConfigured) && (
             <div className="hidden md:flex space-x-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
@@ -51,27 +51,29 @@ const Navigation: React.FC = () => {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
-                    }`}
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
+                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                      }`}
                   >
                     <span>{item.icon}</span>
                     <span>{item.label}</span>
                   </Link>
                 );
               })}
-              <a
-                href="/auth/logout"
-                className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-800"
-              >
-                <span>🔒</span>
-                <span>Logout</span>
-              </a>
+              {/* Only show logout when Auth0 is configured and user is logged in */}
+              {isAuthConfigured && user && (
+                <a
+                  href="/auth/logout"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+                >
+                  <span>🔒</span>
+                  <span>Logout</span>
+                </a>
+              )}
             </div>
           )}
-          {!user && (
+          {!user && isAuthConfigured && (
             <div className="hidden md:flex">
               <a
                 href="/auth/login?screen_hint=signup"
@@ -83,8 +85,8 @@ const Navigation: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Menu Button */}
-          {user && (
+          {/* Mobile Menu Button - shown when user logged in OR in offline mode */}
+          {(user || !isAuthConfigured) && (
             <div className="md:hidden">
               <button
                 onClick={toggleMobileMenu}
@@ -119,25 +121,27 @@ const Navigation: React.FC = () => {
                   key={item.href}
                   href={item.href}
                   onClick={closeMobileMenu}
-                  className={`flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors ${
-                    isActive
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
-                  }`}
+                  className={`flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors ${isActive
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                    }`}
                 >
                   <span className="text-lg">{item.icon}</span>
                   <span>{item.label}</span>
                 </Link>
               );
             })}
-            <a
-              href="/auth/logout"
-              onClick={closeMobileMenu}
-              className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-800"
-            >
-              <span className="text-lg">🔒</span>
-              <span>Logout</span>
-            </a>
+            {/* Only show logout when Auth0 is configured and user is logged in */}
+            {isAuthConfigured && user && (
+              <a
+                href="/auth/logout"
+                onClick={closeMobileMenu}
+                className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+              >
+                <span className="text-lg">🔒</span>
+                <span>Logout</span>
+              </a>
+            )}
           </div>
         </div>
       )}

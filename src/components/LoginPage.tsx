@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
             <div className="text-6xl mb-4">📈</div>
             <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to Personal Finance Tracker</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Take control of your finances with a simple, private, and secure balance sheet tracker 
+              Take control of your finances with a simple, private, and secure balance sheet tracker
               that keeps all your data local to your browser.
             </p>
           </div>
@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
                 <div className="text-3xl mb-4">1️⃣</div>
                 <h3 className="text-lg font-semibold text-blue-800 mb-3">Add Your Accounts</h3>
                 <p className="text-blue-700 mb-4">
-                  Create accounts for your assets (savings, investments), liabilities (loans, credit cards), 
+                  Create accounts for your assets (savings, investments), liabilities (loans, credit cards),
                   and equity to build your financial picture.
                 </p>
               </div>
@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
                 <div className="text-3xl mb-4">2️⃣</div>
                 <h3 className="text-lg font-semibold text-green-800 mb-3">Record Balances</h3>
                 <p className="text-green-700 mb-4">
-                  Enter current balances for all your accounts. You can update these regularly 
+                  Enter current balances for all your accounts. You can update these regularly
                   to track your progress over time.
                 </p>
               </div>
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
                 <div className="text-3xl mb-4">3️⃣</div>
                 <h3 className="text-lg font-semibold text-purple-800 mb-3">Track Progress</h3>
                 <p className="text-purple-700 mb-4">
-                  View your balance sheet and historical tracking to see your net worth 
+                  View your balance sheet and historical tracking to see your net worth
                   and financial progress over time.
                 </p>
               </div>

@@ -3,13 +3,20 @@
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import LoginPage from '@/components/LoginPage';
+import WelcomeScreen from '@/components/WelcomeScreen';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isAuthConfigured } = useAuth();
+
+  // If Auth0 is not configured, bypass login and show WelcomeScreen for new users
+  // This allows the app to work in offline-only mode for developers
+  if (!isAuthConfigured) {
+    return <>{children}</>;
+  }
 
   if (isLoading) {
     return (
