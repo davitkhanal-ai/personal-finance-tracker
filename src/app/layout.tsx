@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FinanceProvider } from "@/context/FinanceContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import Navigation from "@/components/Navigation";
 import ClientOnly from "@/components/ClientOnly";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
@@ -23,41 +24,56 @@ export const metadata: Metadata = {
   description: "Track your personal finances with balance sheets and account management",
 };
 
+// Inline script to prevent flash of wrong theme on page load
+const themeScript = `
+  (function() {
+    try {
+      var theme = localStorage.getItem('finance-theme') || 'system';
+      var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (isDark) document.documentElement.classList.add('dark');
+    } catch(e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white min-h-screen`}
-        style={{ backgroundColor: 'white' }}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 min-h-screen transition-colors duration-200`}
       >
         <GoogleAnalytics />
         <AuthProvider>
           <CurrencyProvider>
             <FinanceProvider>
-              <ClientOnly
-                fallback={
-                  <nav className="bg-white shadow-lg border-b">
-                    <div className="max-w-6xl mx-auto px-4">
-                      <div className="flex justify-between items-center py-4">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-2xl">📈</span>
-                          <span className="text-xl font-bold text-gray-800 hidden sm:block">Personal Finance Tracker</span>
-                          <span className="text-lg font-bold text-gray-800 sm:hidden">Finance Tracker</span>
+              <ThemeProvider>
+                <ClientOnly
+                  fallback={
+                    <nav className="bg-white dark:bg-gray-900 shadow-lg border-b dark:border-gray-700">
+                      <div className="max-w-6xl mx-auto px-4">
+                        <div className="flex justify-between items-center py-4">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-2xl">📈</span>
+                            <span className="text-xl font-bold text-gray-800 dark:text-gray-100 hidden sm:block">Personal Finance Tracker</span>
+                            <span className="text-lg font-bold text-gray-800 dark:text-gray-100 sm:hidden">Finance Tracker</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </nav>
-                }
-              >
-                <Navigation />
-              </ClientOnly>
-              <main className="py-8 px-4">
-                {children}
-              </main>
+                    </nav>
+                  }
+                >
+                  <Navigation />
+                </ClientOnly>
+                <main className="py-8 px-4">
+                  {children}
+                </main>
+              </ThemeProvider>
             </FinanceProvider>
           </CurrencyProvider>
         </AuthProvider>
