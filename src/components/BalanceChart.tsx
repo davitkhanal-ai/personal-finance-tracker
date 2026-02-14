@@ -41,7 +41,7 @@ export const BalanceChart = ({ account, balances, height = 400 }: BalanceChartPr
   const isDark = resolvedTheme === 'dark';
 
   const textColor = isDark ? '#e5e5e5' : '#374151';
-  const gridColor = isDark ? 'rgba(163, 163, 163, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+  const gridColor = isDark ? 'rgba(163, 163, 163, 0.3)' : 'rgba(0, 0, 0, 0.1)';
 
   // Sort balances by date
   const sortedBalances = balances

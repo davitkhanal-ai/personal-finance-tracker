@@ -44,7 +44,11 @@ function applyTheme(theme: Theme) {
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [theme, setThemeState] = useState<Theme>('system');
-    const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+    const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => {
+        if (typeof window === 'undefined') return 'light';
+        if (document.documentElement.classList.contains('dark')) return 'dark';
+        return getSystemTheme();
+    });
 
     // Load saved theme on mount
     useEffect(() => {

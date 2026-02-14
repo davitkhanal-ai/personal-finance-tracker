@@ -51,7 +51,7 @@ export const NetWorthChart = ({ accounts, balances, height = 400 }: NetWorthChar
   const isDark = resolvedTheme === 'dark';
 
   const textColor = isDark ? '#e5e5e5' : '#374151';
-  const gridColor = isDark ? 'rgba(163, 163, 163, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+  const gridColor = isDark ? 'rgba(163, 163, 163, 0.3)' : 'rgba(0, 0, 0, 0.1)';
 
   const netWorthData = useMemo(() => {
     // Get all unique dates from balances
