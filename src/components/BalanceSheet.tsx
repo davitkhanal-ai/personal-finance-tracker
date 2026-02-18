@@ -7,12 +7,14 @@ import { useCurrency } from '@/context/CurrencyContext';
 import { CurrencySelector } from './CurrencySelector';
 import WelcomeScreen from './WelcomeScreen';
 import { ManageAccountModal } from './ManageAccountModal';
+import { ConfirmationModal } from './ui/ConfirmationModal';
 
 export const BalanceSheet = () => {
   const { getAccountsWithBalances, deleteAccount, updateAccount, isLoading } = useFinance();
   const { formatCurrency } = useCurrency();
   const accountsWithBalances = getAccountsWithBalances();
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
+  const [accountToDelete, setAccountToDelete] = useState<Account | null>(null);
 
   const handleSaveAccount = (updates: Pick<Account, 'name' | 'category' | 'type'>) => {
     if (!editingAccount) return;
@@ -204,6 +206,30 @@ export const BalanceSheet = () => {
           onSave={handleSaveAccount}
         />
       )}
+
+      <ConfirmationModal
+        isOpen={!!accountToDelete}
+        onClose={() => setAccountToDelete(null)}
+        onConfirm={() => {
+          if (accountToDelete) {
+            deleteAccount(accountToDelete.id);
+            setAccountToDelete(null);
+          }
+        }}
+        title={
+          accountToDelete?.category === 'Credit Cards'
+            ? 'Remove Card Record'
+            : accountToDelete?.category === 'Cash and Cash Equivalents'
+              ? 'Remove Cash Account'
+              : `Remove ${accountToDelete?.category || 'Account'} Record`
+        }
+        message={`Are you sure you want to delete "${accountToDelete?.name && accountToDelete.name.length > 50
+          ? accountToDelete.name.substring(0, 50) + '...'
+          : accountToDelete?.name
+          }"? This will also remove all associated balance history. This action cannot be undone.`}
+        confirmText="Delete"
+        variant="danger"
+      />
     </div>
   );
 };
