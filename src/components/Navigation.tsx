@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Navigation = () => {
   const { user, isLoading, isAuthConfigured } = useAuth();
@@ -87,9 +86,6 @@ const Navigation = () => {
                 );
               })}
 
-              {/* Theme Toggle */}
-              <ThemeToggle />
-
               {/* Profile menu - only show when Auth0 is configured and user is logged in */}
               {isAuthConfigured && user && (
                 <div className="relative" ref={profileMenuRef}>
@@ -143,7 +139,6 @@ const Navigation = () => {
           )}
           {!user && isAuthConfigured && (
             <div className="hidden md:flex items-center space-x-1">
-              <ThemeToggle />
               <a
                 href="/auth/login?screen_hint=signup"
                 className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 dark:text-neutral-400 hover:bg-gray-100 dark:hover:bg-neutral-800 hover:text-gray-800 dark:hover:text-neutral-200"
@@ -157,7 +152,6 @@ const Navigation = () => {
           {/* Mobile Menu Button - shown when user logged in OR in offline mode */}
           {(user || !isAuthConfigured) && (
             <div className="md:hidden flex items-center space-x-1">
-              <ThemeToggle />
               <button
                 onClick={toggleMobileMenu}
                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-neutral-400 hover:text-gray-800 dark:hover:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"

@@ -2,49 +2,45 @@
 
 import { useTheme, type Theme } from '@/context/ThemeContext';
 
+const themes: { value: Theme; label: string; icon: string }[] = [
+    { value: 'light', label: 'Light', icon: '☀️' },
+    { value: 'dark', label: 'Dark', icon: '🌙' },
+    { value: 'system', label: 'System', icon: '💻' },
+];
+
 interface ThemeToggleProps {
     className?: string;
 }
 
 export const ThemeToggle = ({ className = '' }: ThemeToggleProps) => {
     const { theme, setTheme } = useTheme();
-
-    const cycleTheme = () => {
-        const order: Theme[] = ['light', 'dark', 'system'];
-        const currentIndex = order.indexOf(theme);
-        const nextIndex = (currentIndex + 1) % order.length;
-        setTheme(order[nextIndex]);
-    };
-
-    const getIcon = () => {
-        switch (theme) {
-            case 'light': return '☀️';
-            case 'dark': return '🌙';
-            case 'system': return '💻';
-        }
-    };
-
-    const getLabel = () => {
-        switch (theme) {
-            case 'light': return 'Light';
-            case 'dark': return 'Dark';
-            case 'system': return 'System';
-        }
-    };
+    const current = themes.find((t) => t.value === theme) ?? themes[2];
 
     return (
-        <button
-            type="button"
-            onClick={cycleTheme}
-            className={`flex items-center space-x-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors
-        text-gray-600 hover:text-gray-900 hover:bg-gray-100
-        dark:text-neutral-400 dark:hover:text-neutral-200 dark:hover:bg-neutral-700
-        ${className}`}
-            aria-label={`Theme: ${getLabel()}. Click to change.`}
-            title={`Theme: ${getLabel()}`}
-        >
-            <span>{getIcon()}</span>
-            <span className="hidden sm:inline">{getLabel()}</span>
-        </button>
+        <div className={`relative inline-block ${className}`}>
+            <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+                <span>{current.icon}</span>
+            </div>
+            <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as Theme)}
+                aria-label="Color theme"
+                className="appearance-none pl-9 pr-9 py-2 rounded-md border border-gray-300 dark:border-neutral-600
+                    bg-white dark:bg-neutral-800 text-sm font-medium
+                    text-gray-700 dark:text-neutral-200
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            >
+                {themes.map((t) => (
+                    <option key={t.value} value={t.value}>
+                        {t.label}
+                    </option>
+                ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-neutral-400">
+                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+            </div>
+        </div>
     );
 };

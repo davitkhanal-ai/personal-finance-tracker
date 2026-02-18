@@ -6,6 +6,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import { useAuth } from '@/context/AuthContext';
 import { CurrencySelector } from './CurrencySelector';
 import { CloudSyncToggle } from './CloudSyncToggle';
+import { ThemeToggle } from './ThemeToggle';
 
 const Settings = () => {
   const {
@@ -134,6 +135,15 @@ const Settings = () => {
           </div>
         </div>
       )}
+
+      {/* Appearance */}
+      <div className="bg-gray-50 dark:bg-neutral-700/50 rounded-lg p-6">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-neutral-100 mb-4">🎨 Appearance</h2>
+        <p className="text-gray-600 dark:text-neutral-400 mb-4">
+          Choose your preferred color theme. System will automatically match your device settings.
+        </p>
+        <ThemeToggle />
+      </div>
 
       {/* Currency Preferences */}
       <div className="bg-gray-50 dark:bg-neutral-700/50 rounded-lg p-6">
