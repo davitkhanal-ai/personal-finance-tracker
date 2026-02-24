@@ -20,6 +20,7 @@ export const SUPPORTED_CURRENCIES: Currency[] = [
   { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', locale: 'zh-CN' },
   { code: 'INR', name: 'Indian Rupee', symbol: '₹', locale: 'en-IN' },
   { code: 'KRW', name: 'South Korean Won', symbol: '₩', locale: 'ko-KR' },
+  { code: 'NPR', name: 'Nepalese Rupee', symbol: '₨', locale: 'ne-NP' }
 ];
 
 interface CurrencyContextType {
